@@ -1,0 +1,34 @@
+# === NIXPACKS CONFIG UNTUK LARAVEL ===
+
+[phases.setup]
+# Install PHP 8.3, Composer, dan ekstensi MySQL
+nixPkgs = [
+  "php83",
+  "php83Packages.composer",
+  "php83Packages.pdo_mysql",
+  "php83Packages.openssl",
+  "php83Packages.mbstring",
+  "php83Packages.tokenizer",
+  "php83Packages.xml",
+  "php83Packages.curl",
+  "php83Packages.zip",
+  "php83Packages.fileinfo"
+]
+
+[phases.install]
+# Jalankan composer install
+cmds = [
+  "composer install --no-dev --optimize-autoloader"
+]
+
+[phases.build]
+# Cache config, route, dan view Laravel
+cmds = [
+  "php artisan config:cache",
+  "php artisan route:cache",
+  "php artisan view:cache"
+]
+
+[start]
+# Jalankan Laravel development server
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
